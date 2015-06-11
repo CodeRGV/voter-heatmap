@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <title>Googlemaps Heatmap Layer</title>
+    <style>
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map-canvas { height: 100% }
+      h1 { position:absolute; }
+    </style>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script src="heatmap.min.js"></script>
+    <script src="gmaps-heatmap.js"></script>
+    <script src="voter-data.json"></script>
+  </head>
+  <body>
+    <h1>Gmaps Heatmap Overlay Example</h1>
+    <div id="map-canvas"></div>
+    
+		<style>
+			#navigation {
+				position: fixed;
+				z-index: 1000000;
+				width: 25%;
+				right: 25px;
+				top: 25px;
+				bottom: 25px;
+				background: rgba(255, 255, 255, 0.80);
+				box-shadow: 0 2px rgba(0, 0, 0, 0.20);
+				padding: 20px;
+				text-align: center;
+				font: 1em/1.5 'Arial';
+				border-radius: 5px;
+			}
+			#navigation img {
+				max-width: 100%;
+				height: 150px;
+			}
+		</style>
+
+		<div id="navigation">
+			<img src="http://www.codergv.org/logo.png" alt="">
+			<h2>Voter Heat Map</h2>
+			<p>
+				The map shows the nearest geocoded location of a registered voter 
+				in a subset of all registered in the Rio Grande Valley. The map is helpful
+				for AACT, a non-profit with the mission to increase the voter turnout, to find gaps in 
+				the population that have not registered to vote.
+			</p>
+			<p>
+				Future versions of the map could use census data to correlatd registration with income
+				and other dimensions.
+			</p>
+			<p>
+				<em>
+					This a project for the <br>National Day of Civic Hacking. <br><a href="http://codergv.org/hackforchange">Find out more</a>. 
+				</em>
+			</p>
+		</div>
+
+    <script>
+        // map center
+        var myLatlng = new google.maps.LatLng(26.5103275,-98.7276696);
+        // map options,
+        var myOptions = {
+          zoom: 10,
+          center: myLatlng
+        };
+        // standard map
+        map = new google.maps.Map(document.getElementById("map-canvas"), myOptions);
+        // heatmap layer
+        heatmap = new HeatmapOverlay(map, 
+          {
+            // radius should be small ONLY if scaleRadius is true (or small radius is intended)
+            "radius": 10,
+            "maxOpacity": 1, 
+            // scales the radius based on map zoom
+            "useLocalExtrema": true,
+            // which field name in your data represents the latitude - default "lat"
+            latField: 'lat',
+            // which field name in your data represents the longitude - default "lng"
+            lngField: 'lng',
+            // which field name in your data represents the data value - default "value"
+            valueField: 'count'
+          }
+        );
+
+        var testData = {
+          max: 8,
+          data: voterData
+        };
+
+        heatmap.setData(testData);
+
+</script>
+  </body>
+</html>
